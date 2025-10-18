@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tableau de Bord – Vaccination Antigrippale</title>
+    <link rel="stylesheet" href="assets/dashboard.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+  <body>
+    <div class="container">
+      <header class="header-bar">
+        <h2>Tableau de Bord Global – Vaccination Antigrippale 2025/2026</h2>
+        <a href="storeManager.html" class="logout-btn">Store Manager</a>
+        <button class="logout-btn" id="logoutId">Déconnexion</button>
+      </header>
+
+      <section class="stats-section">
+        <div class="stats-grid">
+          <div class="card clickable" id="cardReçue">
+            <h4>Total des doses reçues</h4>
+            <p id="totalReçue">10000</p>
+          </div>
+          <div class="card clickable red-card" id="cardRestante">
+            <h4>Total des doses restantes</h4>
+            <p id="totalRestante">0</p>
+          </div>
+          <div class="card clickable" id="cardVaccines">
+            <h4>Total des personnes vaccinées</h4>
+            <p id="totalVaccines">0</p>
+          </div>
+          <div class="card clickable" id="cardAdmin">
+            <h4>Le taux global de vaccinations</h4>
+            <p id="tauxVaccinations">0</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- <div id="stock-initial-container"></div> -->
+
+      <div id="stock-initial-container" class="vaccine-stock-section">
+        <div class="section-header">
+          <h2><i class="fas fa-syringe"></i> لوحة مخزون اللقاحات</h2>
+          <p>نظرة عامة على مخزون اللقاحات حسب المؤسسة</p>
+        </div>
+        <!-- سيتم تعبئة البطاقات هنا بواسطة JavaScript -->
+      </div>
+
+      <section class="vacc-summary">
+        <h3>Résumé des Vaccinations par Établissement</h3>
+
+        <div class="table-wrapper">
+          <table class="vacc-modern-table" id="vaccTable">
+            <thead>
+              <tr>
+                <th rowspan="2">Établissement</th>
+                <th colspan="4" class="center">
+                  Total des personnes vaccinées
+                </th>
+                <th rowspan="2">Total</th>
+                <th rowspan="2" class="center">% d’utilisation</th>
+              </tr>
+              <tr>
+                <th>Aujourd’hui</th>
+                <th>3 derniers jours</th>
+                <th>Cette semaine</th>
+                <th>Ce mois-ci</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Modified: Charts side by side -->
+      <div class="charts-container">
+        <section class="chart-section">
+          <h3>Répartition par établissement</h3>
+          <canvas id="chartEtab"></canvas>
+        </section>
+
+        <section class="chart-section">
+          <h3>Répartition par catégorie de population</h3>
+          <canvas id="chartCategories"></canvas>
+        </section>
+      </div>
+
+      <section class="table-section" id="detailsSection" style="display: none">
+        <h3>Détails par Établissement</h3>
+        <table id="tableDetails">
+          <thead>
+            <tr>
+              <th>Établissement</th>
+              <th>Total Vaccinés</th>
+              <th>Doses Reçues</th>
+              <th>Doses Administrées</th>
+              <th>Doses Restantes</th>
+              <th>% Utilisation</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </section>
+    </div>
+    <script type="module" src="scripts/dashboard.js"></script>
+  </body>
+</html>

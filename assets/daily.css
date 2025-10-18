@@ -1,0 +1,429 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: #f8f9fb;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(0.5rem, 2vw, 1.5rem);
+}
+
+main {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 3vw, 1.5rem);
+}
+
+.center-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.form-card {
+  background: #ffffff;
+  padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 3vw, 3rem);
+  border-radius: 16px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+  width: 100%;
+  max-width: min(95%, 1000px);
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+h1 {
+  font-size: clamp(1.2rem, 3vw, 1.4rem);
+  color: #0d47a1;
+  margin-bottom: 0.5rem;
+}
+
+h2, h3 {
+  color: #1565c0;
+  margin-top: clamp(1rem, 2vw, 1.5rem);
+  margin-bottom: clamp(0.5rem, 1.5vw, 0.7rem);
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+}
+
+.grid, .grid-3 {
+  display: grid;
+  gap: clamp(0.8rem, 2vw, 1rem);
+}
+
+.grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 230px), 1fr));
+}
+
+.grid-3 {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 180px), 1fr));
+}
+
+.form-group {
+  text-align: left;
+}
+
+label {
+  font-weight: 100;
+  color: black;
+  display: block;
+  margin-bottom: 0.3rem;
+  font-size: clamp(0.85rem, 2vw, 0.95rem);
+}
+
+input {
+  width: 100%;
+  padding: clamp(0.6rem, 1.5vw, 0.7rem);
+  border: 1px solid #cfd8dc;
+  border-radius: 8px;
+  transition: all 0.2s;
+  background-color: #fafafa;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  min-height: 44px; /* Better touch targets */
+}
+
+input:focus {
+  outline: none;
+  border-color: #2196f3;
+  background-color: #fff;
+  box-shadow: 0 0 8px rgba(33, 150, 243, 0.25);
+}
+
+.total-display {
+  margin: clamp(1rem, 2vw, 1.2rem) 0;
+  font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+.total-display strong {
+  color: #0d47a1;
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+}
+
+.save-btn, .SetupSave-btn {
+  width: 100%;
+  padding: clamp(0.8rem, 2vw, 1rem);
+  border: none;
+  border-radius: 10px;
+  background: #1976d2;
+  color: white;
+  font-weight: 600;
+  font-size: clamp(1rem, 2.5vw, 1.1rem);
+  margin-top: clamp(1rem, 2vw, 1.5rem);
+  cursor: pointer;
+  box-shadow: 0 3px 15px rgba(25,118,210,0.25);
+  transition: 0.3s;
+  min-height: 50px; /* Better touch targets */
+}
+
+.save-btn:hover, .SetupSave-btn:hover {
+  background: #1565c0;
+  transform: translateY(-2px);
+}
+
+/* ✅ Success popup */
+.success-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.8);
+  background: #ffffff;
+  border-radius: 20px;
+  padding: clamp(1.5rem, 3vw, 2rem) clamp(2rem, 4vw, 3rem);
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease;
+  z-index: 1000;
+  max-width: min(90%, 400px);
+}
+
+.success-popup.show {
+  opacity: 1;
+  pointer-events: all;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.success-popup p {
+  margin-top: 1rem;
+  color: #2e7d32;
+  font-weight: 600;
+  font-size: clamp(0.9rem, 2vw, 1rem);
+}
+
+/* ✅ Animated checkmark */
+.checkmark {
+  width: clamp(50px, 10vw, 70px);
+  height: clamp(50px, 10vw, 70px);
+  border-radius: 50%;
+  border: 4px solid #4caf50;
+  display: inline-block;
+  position: relative;
+  animation: pop 0.3s ease-out;
+}
+
+.checkmark-stem {
+  position: absolute;
+  width: 4px;
+  height: clamp(18px, 4vw, 25px);
+  background-color: #4caf50;
+  left: 50%;
+  top: 30%;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.checkmark-kick {
+  position: absolute;
+  width: clamp(8px, 2vw, 12px);
+  height: 4px;
+  background-color: #4caf50;
+  left: 30%;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+@keyframes pop {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* Header Styles */
+.main-header {
+  text-align: center;
+  padding: clamp(1rem, 3vw, 1.25rem) clamp(0.5rem, 2vw, 0.625rem);
+  background: white;
+  border-radius: 12px;
+  margin-bottom: clamp(1rem, 3vw, 1.25rem);
+}
+
+.main-header h2 {
+  font-size: clamp(1.3rem, 4vw, 1.8rem);
+  color: #222;
+  margin-bottom: clamp(0.5rem, 2vw, 0.625rem);
+}
+
+.header-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: clamp(0.5rem, 2vw, 0.625rem);
+  border-top: 2px solid #e0e0e0;
+  padding-top: clamp(0.5rem, 2vw, 0.625rem);
+}
+
+#etabName {
+  font-weight: 600;
+  color: #555;
+  font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: clamp(0.5rem, 2vw, 0.9375rem);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.logout-btn {
+  background-color: #e63946;
+  color: white;
+  border: none;
+  padding: clamp(0.5rem, 1.5vw, 0.5rem) clamp(0.7rem, 2vw, 0.875rem);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+  font-size: clamp(0.8rem, 2vw, 0.9rem);
+  min-height: 40px;
+}
+
+.logout-btn:hover {
+  background-color: #c72e3d;
+}
+
+/* Table Section */
+.table-section {
+  background: white;
+  border-radius: 12px;
+  padding: clamp(1rem, 2vw, 1.5rem) clamp(1rem, 3vw, 2rem);
+  margin: clamp(0.5rem, 2vw, 1rem);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  width: calc(100% - 2rem);
+  max-width: none;
+}
+
+.table-section h3 {
+  color: #004b8d;
+  margin-bottom: 1rem;
+  font-weight: 600;
+  font-size: clamp(1.1rem, 3vw, 1.4rem);
+}
+
+.table-container {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: clamp(0.8rem, 2vw, 0.95rem);
+  min-width: 800px; /* Minimum width for table to be readable */
+}
+
+.data-table th {
+  background: #004b8d;
+  color: #fff;
+  font-weight: 600;
+  padding: clamp(0.6rem, 1.5vw, 0.8rem);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.data-table td {
+  border-bottom: 1px solid #e0e0e0;
+  padding: clamp(0.5rem, 1.5vw, 0.7rem);
+  text-align: center;
+}
+
+.data-table tr:hover {
+  background: #f8f9fa;
+}
+
+.data-table td:last-child {
+  font-weight: 700;
+  color: #004b8d;
+  background: #f0f6ff;
+}
+
+.data-table th:last-child {
+  background: #003e75;
+}
+
+/* Enhanced Responsive Breakpoints */
+
+/* Large mobile devices */
+@media (max-width: 768px) {
+  body {
+    padding: 0.5rem;
+  }
+  
+  .form-card {
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+  
+  .header-bottom {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .header-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 480px) {
+  body {
+    padding: 0.25rem;
+  }
+  
+  .form-card {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .grid, .grid-3 {
+    grid-template-columns: 1fr; /* Single column on very small screens */
+  }
+  
+  .table-section {
+    margin: 0.5rem;
+    padding: 0.75rem;
+    border-radius: 8px;
+  }
+  
+  .logout-btn {
+    min-height: 44px; /* Larger touch target */
+    flex: 1;
+    max-width: 120px;
+  }
+  
+  .header-right {
+    width: 100%;
+  }
+  
+  #today {
+    font-size: 0.85rem;
+  }
+}
+
+/* Very small devices (Galaxy Fold, etc.) */
+@media (max-width: 320px) {
+  .form-card {
+    padding: 0.75rem;
+  }
+  
+  .main-header h2 {
+    font-size: 1.1rem;
+  }
+  
+  .success-popup {
+    padding: 1rem 1.5rem;
+  }
+}
+
+/* Landscape orientation for mobile */
+@media (max-height: 600px) and (orientation: landscape) {
+  body {
+    padding: 0.5rem;
+  }
+  
+  .form-card {
+    padding: 1rem 2rem;
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+  
+  .table-section {
+    max-height: 70vh;
+    overflow-y: auto;
+  }
+}
+
+/* High-resolution displays */
+@media (min-resolution: 192dpi) {
+  .form-card, .table-section {
+    border: 0.5px solid #e1e5eb;
+  }
+}
+
+/* Print styles */
+@media print {
+  .logout-btn, .save-btn, .SetupSave-btn {
+    display: none;
+  }
+  
+  .form-card, .table-section {
+    box-shadow: none;
+    border: 1px solid #000;
+  }
+}
+
+
+/*  error  */
+.error {
+  border: 2px solid #ff4d4d !important;
+  background-color: #fff0f0;
+}
+.errorBtn {
+  background-color: #ff4d4d;
+}

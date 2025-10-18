@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Saisie Journalière – Vaccination Antigrippale</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/daily.css" />
+</head>
+<body>
+  <main >
+    <div class="center-container">
+      <div class="form-card">
+            
+      <header class="main-header">
+        <h2>Évaluation Vaccination Antigrippale 2025/2026</h2>
+        
+        <div class="header-bottom">
+          <p id="etabName">EPSP Berriane</p>
+          <div class="header-right">
+            <span id="today"></span>
+            <button id="logoutId" class="logout-btn">Déconnexion</button>
+          </div>
+        </div>
+      </header>
+      <div class="grid">
+        <div class="form-group">
+          <label for="centres">Centres vaccinateurs</label>
+          <input type="number" id="centres" name="centres" min="0" required />
+        </div>
+        <div class="form-group">
+          <label for="equipes">Équipes vaccinateurs</label>
+          <input type="number" id="equipes" name="equipes" min="0" required />
+        </div>
+        <div class="form-group">
+          <label for="vaccines">Vaccins reçus</label>
+          <input type="number" id="vaccines" name="vaccines" min="0" required />
+        </div>
+        <button id="saveSetup" type="submit" class="SetupSave-btn">Enregistrer</button>
+      </div>
+      </br><hr>
+      <h3>Saisie Journalière - Personnes vaccinées</h3>
+      <div class="grid">
+        <div class="form-group"><label>≥65 ans (sans maladie chronique)</label><input type="number" id="p65sain"  ></div>
+        <div class="form-group">  <label>≥65 ans (avec maladie chronique)</label><input type="number" id="p65malade"  ></div>
+        <div class="form-group"><label>Maladie Chroniques (adultes)</label><input type="number" id="maladults"  ></div>
+        <div class="form-group"><label>Maladie Chroniques (enfants)</label><input type="number" id="malenfants"  ></div>
+        <div class="form-group"><label>Femmes enceintes</label><input type="number" id="enceintes"  ></div>
+        <div class="form-group"><label>Personnel de santé</label><input type="number" id="sante"  ></div>
+        <div class="form-group"><label>Pèlerins</label><input type="number" id="pelerins"  ></div>
+        <div class="form-group"><label>Autres</label><input type="number" id="autres"  ></div>
+        <div class="form-group"><label>Total Vaccinés ajourdoui :</label> <strong id="totalVaccinesAj">0</strong> </div>
+      </div>
+      <div class="total-display">
+        <span>Total Vaccinés :</span> 
+        <strong id="totalVaccines">0</strong>
+      </div>
+      
+      <h3>Gestion des Doses</h3>
+      <hr>
+      <div class="grid-3">
+        <div class="form-group"><label>Reçue</label><input id="recue" type="number"  readonly></div>
+        <div class="form-group"><label>Administrée</label><input type="number" id="administree" readonly></div>
+        <div class="form-group"><label>Restante</label><input type="number" id="restante" readonly></div>
+      </div>
+      <div id="errors"></div>
+      <button id="saveDaily" class="save-btn">Enregistrer</button>
+
+    </div>
+    </div>
+    
+    <div class="table-section">
+        <h3>Tableau récapitulatif de la vaccination</h3>
+        <div class="table-container">
+          <table class="data-table" id="reportsTable">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>≥65 ans sains</th>
+                <th>≥65 ans malades</th>
+                <th>Chroniques adultes</th>
+                <th>Chroniques enfants</th>
+                <th>Femmes enceintes</th>
+                <th>Santé</th>
+                <th>Pèlerins</th>
+                <th>Autres</th>
+                <th>Total Vaccinated</th>
+              </tr>
+            </thead>
+            <tbody>
+            
+            </tbody>
+          </table>
+        </div>
+      </div>    
+  </main>
+
+    
+
+  <div class="success-popup" id="successPopup">
+    <div class="checkmark">
+      <div class="checkmark-stem"></div>
+      <div class="checkmark-kick"></div>
+    </div>
+    <p>Données enregistrées avec succès !</p>
+  </div>
+
+  <!-- <script>
+    document.addEventListener('DOMContentLoaded', calcTotal);
+    function calcTotal() {
+      const ids = ["p65sain","p65malade","maladults","malenfants","enceintes","sante","pelerins","autres"];
+      let total = ids.reduce((sum, id) => sum + (parseInt(document.getElementById(id).value) || 0), 0);
+      document.getElementById("totalVaccinesAj").textContent = total;
+      
+      document.getElementById("administree").value = parseInt(document.getElementById("administree").value)+total;
+      let recue = parseInt(document.getElementById("recue").value);
+      document.getElementById("recue").value = recue;
+      document.getElementById("restante").value = recue - total;
+    }
+  </script> -->
+
+  <script type="module" src="scripts/daily.js" > </script>
+</body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Gestion des Vaccins Reçus</title>
+    <link rel="stylesheet" href="./assets/storeManager.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <header class="header">
+        <h1><i class="fas fa-syringe"></i> Gestion des Stocks de Vaccins</h1>
+        <p>Suivi et gestion des vaccins reçus par département</p>
+      </header>
+
+      <main class="main-content">
+        <section class="table-section">
+          <div class="card">
+            <div class="card-header">
+              <h2><i class="fas fa-list"></i> Inventaire des Vaccins</h2>
+              <button class="btn btn-secondary" id="refreshBtn">
+                <i class="fas fa-sync-alt"></i> Actualiser
+              </button>
+            </div>
+            <div class="card-body">
+              <div class="table-container">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Département</th>
+                      <th>Quantité Reçue</th>
+                      <th>Stock Restant</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tableBody">
+                    <!-- Les données seront chargées ici -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Modal pour augmenter la quantité -->
+    <div id="quantityModal" class="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Augmenter le Stock</h3>
+          <span class="close">&times;</span>
+        </div>
+        <div class="modal-body">
+          <p>Veuillez saisir la quantité à ajouter :</p>
+          <input
+            type="number"
+            id="addedQuantity"
+            placeholder="Quantité à ajouter"
+            min="1"
+          />
+        </div>
+        <div class="modal-footer">
+          <button id="confirmAdd" class="btn btn-success">Confirmer</button>
+          <button id="cancelAdd" class="btn btn-secondary">Annuler</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./scripts/storeManager.js"></script>
+  </body>
+</html>
