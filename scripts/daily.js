@@ -1,6 +1,6 @@
 import { getsetupCount, saveSetup, saveDailyReport, getDailyTotal, fetchReports, getStoreDataById, saveRemaining } from './api.js';
 import { logoutUser } from './auth.js';
-const apiBase = "https://vacination2025-api.ferhathamza17.workers.dev";
+const apiBase = "https://vacination58-api.ferhathamza17.workers.dev/";
 checkAccess("coordinateur");
 
 const centresElement = document.getElementById("centres")
