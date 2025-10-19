@@ -1,13 +1,24 @@
-import { loginUser, logoutUser, getCurrentUser, isAuthenticated } from "./auth.js";
+import { loginUser } from "./auth.js";
+import { getAllUsernames } from "./api.js";
 const loginBtn = document.getElementById("loginBtn");
 const errorP = document.getElementById("errorId");
+const option = document.getElementById("etablissement");
 
 loginBtn.addEventListener('click', login)
 
+document.addEventListener("DOMContentLoaded", () => {
+  init();
+})
+
+function init() {
+  fillUsernames();
+}
+
 async function login() {
-  const etablissement = document.getElementById("etablissement").value;
+  const etablissement = option.value;
   const password = document.getElementById("password").value;
 
+  console.log('etab: ', etablissement, 'password: ', password)
   if (!etablissement || !password) {
     alert("Veuillez remplir tous les champs !");
     return;
@@ -19,6 +30,8 @@ async function login() {
     console.log("✅ Logged in:", user);
     if (user.role === "admin") {
       window.location.href = "dashboard.html";
+    } else if (user.role === "soadmin") {
+      window.location.href = "storeManager.html";
     } else {
       window.location.href = "daily.html";
     }
@@ -27,6 +40,22 @@ async function login() {
     errorP.textContent = error.message;
     console.error("❌ Login failed:", error.message);
   }
+
+}
+
+async function fillUsernames() {
+  const res = await getAllUsernames();
+  console.log(res);
+
+  let html = '<option value="">-- Sélectionner --</option>';
+
+  res.data.forEach(item => {
+    html += `
+      <option value="${item.username}" >${item.etab}</option>
+    `
+  });
+
+  option.innerHTML = html;
 
 }
 
@@ -40,6 +69,9 @@ function checkAccess(requiredRole) {
   }
 
   if (requiredRole === "admin" && role.role !== "admin") {
+    window.location.href = "index.html";
+  }
+  if (requiredRole === "soadmin" && role.role !== "soadmin") {
     window.location.href = "index.html";
   }
 

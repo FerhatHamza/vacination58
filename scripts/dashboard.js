@@ -1,5 +1,5 @@
 import { logoutUser } from "./auth.js";
-import { getAdminStats, getAdminStats2, summaryByPeriod, getStoreData } from "./api.js";
+import { getAdminStats, getAdminStats2, summaryByPeriod, getStoreData, getVaccinesReceived } from "./api.js";
 
 const tauxVaccinations = document.getElementById("tauxVaccinations");
 const totalVaccines = document.getElementById("totalVaccines");
@@ -115,30 +115,32 @@ async function renderEtabTable() {
 
 
 
+    // const summaryRes = await summaryByPeriod();
+    const [summaryRes, res] = await Promise.all([
+      summaryByPeriod(),
+      getVaccinesReceived()
+    ]);
+    const vaccinesRec = res.result;
 
-
-    // if (perEtabStats.success && Array.isArray(perEtabStats.data)) {
-
-    const summaryRes = await summaryByPeriod();
     const summaryData = summaryRes.data;
-    console.log('summaryData:: ', summaryData.users);
+    // console.log('summaryData:: ', summaryData.users);
 
 
     if (!summaryData || !Array.isArray(summaryData.users)) {
       console.warn("⚠️ Aucun utilisateur trouvé dans summaryData");
       return;
     }
-
+    // console.log('summary:: ', summaryData);
     summaryData.users.forEach(item => {
       const row = document.createElement("tr");
-      const received = vaccinesReceived[item.username] || 0;
+      const received = vaccinesRec[item.etab] || 0;
       const utilisation = received > 0 ? item.grandTotal_total_vaccinated / received : 0;
 
       const colorData = getUtilisationColor(utilisation)
       const textColor = getTextColor(colorData);
 
       row.innerHTML = `
-          <td>${item.username}</td>
+          <td>${item.etab}</td>
           <td>${item.summary.today}</td>
           <td>${item.summary.lastThreeDays}</td>
           <td>${item.summary.thisWeek}</td>
@@ -162,36 +164,6 @@ async function renderEtabTable() {
     console.error("Erreur lors du rendu du tableau:", error);
   }
 }
-
-// stock management
-
-// async function renderStockInitialCards() {
-//   const res = await getStoreData();
-
-//   console.log(res);
-
-//   let html = `<div class="stock-grid">`;
-
-//   res.data.forEach((row) => {
-//     html += `
-//       <div class="stock-card">
-//         <div class="stock-etab">
-//           🏥 ${row.department}
-//         </div>
-//         <div class="stock-amount">
-//           Total: ${row.quantity_received.toLocaleString("fr-FR")}  
-//         </div>
-//         <div class="stock-amountRemaining">
-//           Remaining: ${row.quantity_remaining.toLocaleString("fr-FR")}
-//         </div>
-//       </div>
-//     `;
-//   });
-
-//   html += `</div>`;
-//   container.innerHTML = html;
-
-// }
 
 async function renderStockInitialCards() {
   const container = document.getElementById('stock-initial-container');
@@ -300,16 +272,6 @@ function formatNumber(num) {
   }
   return num.toLocaleString('fr-FR');
 }
-
-// التأكد من تحميل المكتبة Font Awesome إذا لم تكن موجودة
-if (!document.querySelector('link[href*="font-awesome"]')) {
-  const faLink = document.createElement('link');
-  faLink.rel = 'stylesheet';
-  faLink.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
-  document.head.appendChild(faLink);
-}
-
-
 
 
 

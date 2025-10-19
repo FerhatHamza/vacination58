@@ -9,10 +9,38 @@
   </head>
   <body>
     <div class="container">
-      <header class="header-bar">
+      <!-- <header class="header-bar">
         <h2>Tableau de Bord Global – Vaccination Antigrippale 2025/2026</h2>
         <a href="storeManager.html" class="logout-btn">Store Manager</a>
         <button class="logout-btn" id="logoutId">Déconnexion</button>
+      </header> -->
+
+      <header class="smart-navbar">
+        <div class="nav-left">
+          <h2 class="logo">💉 Vaccination 2025/2026</h2>
+        </div>
+
+        <nav class="nav-links" id="navLinks">
+          <a href="dashboard.html" class="active">Tableau de Bord</a>
+
+          <a href="storeManager.html">Store Manager</a>
+        </nav>
+
+        <div class="nav-right">
+          <div class="user-menu">
+            <button class="user-btn">
+              <i class="fas fa-user-circle"></i>
+              <span id="usernameId"></span>
+              <i class="fas fa-chevron-down small-icon"></i>
+            </button>
+            <ul class="dropdown" id="userDropdown">
+              <li><a href="#" id="logoutId">Déconnexion</a></li>
+            </ul>
+          </div>
+          <button class="menu-toggle" id="menuToggle">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
       </header>
 
       <section class="stats-section">
@@ -102,6 +130,32 @@
         </table>
       </section>
     </div>
+
+    <script>
+      const USER_KEY = "userSession";
+      const role = JSON.parse(localStorage.getItem(USER_KEY));
+
+      document.getElementById("usernameId").textContent = role.Etab;
+      // Toggle dropdown
+      const userBtn = document.querySelector(".user-btn");
+      const dropdown = document.querySelector("#userDropdown");
+      userBtn.addEventListener("click", () => {
+        dropdown.style.display =
+          dropdown.style.display === "block" ? "none" : "block";
+      });
+
+      // Close dropdown on outside click
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".user-menu")) dropdown.style.display = "none";
+      });
+
+      // Toggle mobile menu
+      const menuToggle = document.querySelector("#menuToggle");
+      const navLinks = document.querySelector("#navLinks");
+      menuToggle.addEventListener("click", () => {
+        navLinks.classList.toggle("show");
+      });
+    </script>
     <script type="module" src="scripts/dashboard.js"></script>
   </body>
 </html>

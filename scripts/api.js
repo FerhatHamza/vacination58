@@ -1,4 +1,4 @@
-const API_BASE = "https://vacination58-api.ferhathamza17.workers.dev/";
+const API_BASE = "https://vacination58-api.ferhathamza17.workers.dev";
 
 // Helper for JSON requests
 async function request(endpoint, method = "GET", body = null) {
@@ -145,4 +145,11 @@ export async function saveRemaining(Etab, added_quantity) {
     Etab: Etab,
     quantity_remaining: added_quantity
   });
+}
+
+export async function getAllUsernames() {
+  return await request("/api/users", "GET");
+}
+export async function getVaccinesReceived() {
+  return await request("/api/vaccine-receipts/summary", "GET");
 }

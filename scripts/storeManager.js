@@ -1,4 +1,12 @@
 import { getStoreData, updateStoreData } from './api.js';
+import { logoutUser } from "./auth.js";
+
+const logoutBtn = document.getElementById("logoutId");
+
+logoutBtn.addEventListener("click", () => {
+    logoutUser();
+    window.location.href = "index.html";
+});
 
 // Configuration
 const apiUrl = '/api/vaccine-receipts';
@@ -12,8 +20,21 @@ const cancelBtn = document.getElementById('cancelAdd');
 const refreshBtn = document.getElementById('refreshBtn');
 const addedQuantityInput = document.getElementById('addedQuantity');
 
+
+// 🧩 Access control
+function checkAccess(requiredRole) {
+    const USER_KEY = "userSession";
+    const role = JSON.parse(localStorage.getItem(USER_KEY));
+
+    if (!role || role.role !== requiredRole) {
+        window.location.href = "index.html";
+    }
+}
+
+
 // Initialisation
 document.addEventListener('DOMContentLoaded', function () {
+    checkAccess('soadmin');
     loadData();
     setupEventListeners();
 });
