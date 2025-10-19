@@ -60,7 +60,7 @@ async function getStatus() {
   // Draw charts
   dessinerGraphiques({
     etabs: response2.data.map(r => ({
-      nom: r.username,
+      nom: formatEtabName(r.username),
       total: r.grand_total
     })),
     categories: {
@@ -76,6 +76,24 @@ async function getStatus() {
   });
 }
 
+
+function formatEtabName(input) {
+  if (!input) return "";
+
+  // Split by underscore
+  const parts = input.split("_");
+
+  // First part uppercase (like EPH, EPSP, DSP, etc.)
+  const prefix = parts[0].toUpperCase();
+
+  // Remaining parts: capitalize first letter
+  const rest = parts
+    .slice(1)
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(" ");
+
+  return `${prefix} ${rest}`.trim();
+}
 
 function getUtilisationColor(value) {
   const percent = Math.min(Math.max(value, 0), 1);
