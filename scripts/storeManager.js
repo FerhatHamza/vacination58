@@ -101,7 +101,8 @@ function renderTable(data) {
     data.forEach((row) => {
         const remainingClass = getRemainingQuantityClass(row.quantity_remaining, row.quantity_received);
 
-        body.innerHTML += `
+        if (row.department.includes('Centre')) {
+            body.innerHTML += `
           <tr>
             
             <td>${escapeHtml(row.department)}</td>
@@ -116,6 +117,8 @@ function renderTable(data) {
             </td>
           </tr>
         `;
+        }
+
     });
 }
 

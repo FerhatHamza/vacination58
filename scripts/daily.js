@@ -121,7 +121,7 @@ async function initPage() {
   }
 
   const res3 = await getStoreDataById(role.id);
-  console.log(res3);
+
   vaccinesElement.value = res3.data.quantity_received;
   recue.value = res3.data.quantity_received;
 
@@ -187,6 +187,8 @@ function calcTotal() {
   }
 }
 
+
+console.log('Role:: ', role);
 
 
 async function saveDailyData() {
@@ -261,7 +263,17 @@ async function saveDailyData() {
 
 
   const res = await saveDailyReport(data);
-  const res1 = await saveRemaining(role.Etab, parseInt(total_vaccinated));
+
+
+  if (role.Etab === 'EPH El Menia') {
+    const res1 = await saveRemaining(role.Etab, parseInt(total_vaccinated));
+    const res3 = await saveRemaining('DSP El Menia', parseInt(total_vaccinated));
+  } else {
+    const res1 = await saveRemaining(role.Etab, parseInt(total_vaccinated));
+    const res2 = await saveRemaining('EPSP El Menia', parseInt(total_vaccinated));
+    const res3 = await saveRemaining('DSP El Menia', parseInt(total_vaccinated));
+  }
+
 
   if (res.success) {
     alert("Données enregistrées avec succès !");

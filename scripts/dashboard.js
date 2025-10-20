@@ -4,6 +4,7 @@ import { getAdminStats, getAdminStats2, summaryByPeriod, getStoreData, getVaccin
 const tauxVaccinations = document.getElementById("tauxVaccinations");
 const totalVaccines = document.getElementById("totalVaccines");
 const totalRestante = document.getElementById("totalRestante");
+const totalReçue = document.getElementById("totalReçue");
 const logoutBtn = document.getElementById("logoutId");
 const container = document.getElementById("stock-initial-container"); // stock
 
@@ -46,16 +47,10 @@ async function getStatus() {
     alert("Impossible de charger les statistiques globales");
     return;
   }
-
   // Update summary cards
   const total = Number(result.summary.total_vaccinated) || 0;
-  const target = Number(result.summary.total_vaccines_received) || 10000;
-  const restante = target - total;
-  const percentage = (total / target) * 100;
+  const target = Number(result.summary.total_vaccines_received) || total;
 
-  totalVaccines.textContent = total.toLocaleString();
-  totalRestante.textContent = restante.toLocaleString();
-  tauxVaccinations.textContent = `${percentage.toFixed(2)}%`;
 
   // Draw charts
   dessinerGraphiques({
@@ -157,7 +152,8 @@ async function renderEtabTable() {
       const colorData = getUtilisationColor(utilisation)
       const textColor = getTextColor(colorData);
 
-      row.innerHTML = `
+      if (!item.etab.includes('Centre')) {
+        row.innerHTML = `
           <td>${item.etab}</td>
           <td>${item.summary.today}</td>
           <td>${item.summary.lastThreeDays}</td>
@@ -175,7 +171,9 @@ async function renderEtabTable() {
             ${(utilisation * 100).toFixed(2)} %
           </td>
         `;
-      tableBody.appendChild(row);
+        tableBody.appendChild(row);
+      }
+
     });
     // }
   } catch (error) {
@@ -198,11 +196,11 @@ async function renderStockInitialCards() {
   if (!res || !res.data || res.data.length === 0) {
     container.innerHTML = `
       <div class="section-header">
-        <h2><i class="fas fa-syringe"></i> مخزون اللقاحات</h2>
+        <h2><i class="fas fa-syringe"></i> Stock des vaccins</h2>
       </div>
       <div class="empty-stock">
         <i class="fas fa-inbox"></i>
-        <p>لا توجد بيانات متاحة</p>
+        <p>Aucune donnée disponible</p>
       </div>
     `;
     return;
@@ -210,10 +208,23 @@ async function renderStockInitialCards() {
 
   let html = `
     <div class="section-header">
-      <h2><i class="fas fa-syringe"></i> مخزون اللقاحات</h2>
+      <h2><i class="fas fa-syringe"></i> Stock des vaccins</h2>
     </div>
     <div class="stock-grid">
   `;
+
+  const result = res.data.find(item => item.user_id === 2);
+  console.log(result)
+  totalReçue.textContent = result.quantity_received.toLocaleString();
+  totalRestante.textContent = result.quantity_remaining.toLocaleString();
+
+  const restante = result.quantity_received - result.quantity_remaining;
+  const percentage = (restante / result.quantity_received) * 100;
+
+
+  totalVaccines.textContent = restante.toLocaleString();
+  tauxVaccinations.textContent = `${percentage.toFixed(2)}%`;
+
 
   res.data.forEach((row) => {
     // فحص وجود الخصائص المطلوبة
@@ -228,17 +239,19 @@ async function renderStockInitialCards() {
 
     // تحديد فئة المخزون بناءً على النسبة المتبقية
     let stockClass = 'high-stock';
-    let badgeText = 'مرتفع';
+    let badgeText = 'Élevé';
 
     if (usagePercentage > 70) {
       stockClass = 'low-stock';
-      badgeText = 'منخفض';
+      badgeText = 'Faible';
     } else if (usagePercentage > 40) {
       stockClass = 'medium-stock';
-      badgeText = 'متوسط';
+      badgeText = 'Moyen';
     }
 
-    html += `
+
+    if (!row.department.includes('Centre')) {
+      html += `
       <div class="stock-card ${stockClass}">
         <div class="stock-badge">${badgeText}</div>
         <div class="stock-etab">
@@ -249,21 +262,21 @@ async function renderStockInitialCards() {
           <div class="stock-row stock-amount">
             <div class="stock-label">
               <i class="fas fa-boxes"></i>
-              <span>المستلم</span>
+              <span>Stock</span>
             </div>
-            <div class="stock-value">${formatNumber(row.quantity_received)}</div>
+            <div class="stock-value">${row.quantity_received}</div>
           </div>
           <div class="stock-row stock-amountRemaining">
             <div class="stock-label">
               <i class="fas fa-box-open"></i>
-              <span>المتبقي</span>
+              <span>Restant</span>
             </div>
-            <div class="stock-value">${formatNumber(row.quantity_remaining)}</div>
+            <div class="stock-value">${row.quantity_remaining}</div>
           </div>
         </div>
         <div class="usage-container">
           <div class="usage-label">
-            <span>الاستخدام</span>
+            <span>Utilisation</span>
             <span>${Math.round(usagePercentage)}%</span>
           </div>
           <div class="usage-bar">
@@ -272,6 +285,8 @@ async function renderStockInitialCards() {
         </div>
       </div>
     `;
+    }
+
   });
 
   html += `</div>`;
@@ -352,7 +367,11 @@ function dessinerGraphiques(data) {
     "chartEtab",
     "bar",
     {
-      labels: data.etabs.map(e => e.nom),
+      // labels: data.etabs.map(e => e.nom),
+      labels: data.etabs
+        .filter(e => !/center|centre/i.test(e.nom))
+        .map(e => e.nom),
+
       datasets: [
         {
           label: "Personnes vaccinées",
@@ -437,6 +456,7 @@ function dessinerGraphiques(data) {
             generateLabels: function (chart) {
               const data = chart.data;
               return data.labels.map((label, i) => {
+
                 const value = data.datasets[0].data[i];
                 const percentage = ((value / totalCategories) * 100).toFixed(1);
                 return {

@@ -143,7 +143,7 @@ export async function updateStoreData({ id, added_quantity }) {
 export async function saveRemaining(Etab, added_quantity) {
   return await request("/api/vaccine-receipts/update-remaining", "PUT", {
     Etab: Etab,
-    quantity_remaining: added_quantity
+    quantity_rem: added_quantity
   });
 }
 
