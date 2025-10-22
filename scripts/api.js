@@ -107,6 +107,9 @@ export async function getAdminStats() {
 export async function getAdminStats2() {
   return await request("/api/statusByUsername", "GET");
 }
+export async function getAdminStats3() {
+  return await request("/api/statusElmenia", "GET");
+}
 
 // export async function summaryByPeriod(userId) {
 //   return await request(`/api/dailyReports/summaryByPeriod?user_id=${userId}`, "GET");

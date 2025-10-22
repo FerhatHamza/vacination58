@@ -11,6 +11,7 @@ logoutBtn.addEventListener("click", () => {
 // Configuration
 const apiUrl = '/api/vaccine-receipts';
 let currentRowId = null;
+let addOrRemove = 'add';
 
 // Éléments DOM
 const modal = document.getElementById('quantityModal');
@@ -111,8 +112,11 @@ function renderTable(data) {
                 <strong>${row.quantity_remaining}</strong>
             </td>
             <td>
-              <button class="btn btn-success btn-sm" onclick="openAddQuantityModal(${row.id})">
+              <button class="btn btn-success btn-sm" onclick="openAddQuantityModal(${row.id}, 'add')">
                 <i class="fas fa-plus"></i> Augmenter
+              </button>
+              <button class="btn btn-warning btn-sm" onclick="openAddQuantityModal(${row.id}, 'remove')">
+                <i class="fas fa-plus"></i> diminuer
               </button>
             </td>
           </tr>
@@ -165,8 +169,9 @@ async function handleAddForm(e) {
 }
 
 // Ouvrir le modal d'augmentation de quantité
-function openAddQuantityModal(id) {
+function openAddQuantityModal(id, add) {
     currentRowId = id;
+    addOrRemove = add;
     addedQuantityInput.value = '';
     addedQuantityInput.focus();
     modal.style.display = 'block';
@@ -189,13 +194,17 @@ async function handleQuantityAdd() {
         return;
     }
 
+
     try {
         confirmBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Traitement...';
         confirmBtn.disabled = true;
 
+        const finalValue = addOrRemove === 'remove' ? -added : added;
+
+
         await updateStoreData({
             id: currentRowId,
-            added_quantity: parseInt(added)
+            added_quantity: parseInt(finalValue)
         })
 
 

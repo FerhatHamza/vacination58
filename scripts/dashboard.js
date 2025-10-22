@@ -1,5 +1,5 @@
 import { logoutUser } from "./auth.js";
-import { getAdminStats, getAdminStats2, summaryByPeriod, getStoreData, getVaccinesReceived } from "./api.js";
+import { getAdminStats, getAdminStats2, summaryByPeriod, getStoreData, getVaccinesReceived, getAdminStats3 } from "./api.js";
 
 const tauxVaccinations = document.getElementById("tauxVaccinations");
 const totalVaccines = document.getElementById("totalVaccines");
@@ -42,6 +42,8 @@ async function initDashboard() {
 async function getStatus() {
   const result = await getAdminStats();
   const response2 = await getAdminStats2();
+  const response3 = await getAdminStats3();
+
 
   if (!result.success || !result.summary) {
     alert("Impossible de charger les statistiques globales");
@@ -54,9 +56,9 @@ async function getStatus() {
 
   // Draw charts
   dessinerGraphiques({
-    etabs: response2.data.map(r => ({
-      nom: formatEtabName(r.username),
-      total: r.grand_total
+    etabs: response3.data.map(r => ({
+      nom: r.department,
+      total: r.difference
     })),
     categories: {
       "≥65 ans sains": result.summary.total_age_65_no_chronic,
@@ -152,7 +154,7 @@ async function renderEtabTable() {
       const colorData = getUtilisationColor(utilisation)
       const textColor = getTextColor(colorData);
 
-      if (!item.etab.includes('Centre')) {
+      if (item.etab.includes('DSP El Menia') || item.etab.includes('EPH El Menia') || item.etab.includes('EPSP El Menia')) {
         row.innerHTML = `
           <td>${item.etab}</td>
           <td>${item.summary.today}</td>
@@ -214,7 +216,7 @@ async function renderStockInitialCards() {
   `;
 
   const result = res.data.find(item => item.user_id === 2);
-  console.log(result)
+
   totalReçue.textContent = result.quantity_received.toLocaleString();
   totalRestante.textContent = result.quantity_remaining.toLocaleString();
 
@@ -363,14 +365,25 @@ function dessinerGraphiques(data) {
     return getUtilisationColor(percentage).css;
   });
 
+
+
+
+  // console.log(typeof data.etabs.map(e => e.nom))
+
+  const filteredEtabs = data.etabs.filter(e =>
+    e.nom.includes('DSP El Menia') ||
+    e.nom.includes('EPH El Menia') ||
+    e.nom.includes('EPSP El Menia')
+  );
+
+
   creerGraphique(
     "chartEtab",
     "bar",
     {
       // labels: data.etabs.map(e => e.nom),
-      labels: data.etabs
-        .filter(e => !/center|centre/i.test(e.nom))
-        .map(e => e.nom),
+      labels: filteredEtabs.map(e => e.nom),
+
 
       datasets: [
         {
