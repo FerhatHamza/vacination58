@@ -43,15 +43,29 @@ async function login() {
 
 }
 
+const nom = {
+  'DSP El Menia': 'DSP El Menia',
+  'EPH El Menia': 'EPH El Menia',
+  'EPSP El Menia': 'EPSP El Menia',
+  'EPSP Centre 1': 'CV Hassi Gara',
+  'EPSP Centre 2': 'CV Centre Ville',
+  'EPSP Centre 3': 'CV 200 Logt',
+  'EPSP Centre 4': 'CV Vieux Ksar',
+  'EPSP Centre 5': 'CV Hassi Ghanem',
+  'EPSP Centre 6': 'CV  Hassi Fehal',
+  'EPSP Centre 7': 'Equipe Mobile',
+}
 async function fillUsernames() {
   const res = await getAllUsernames();
   console.log(res);
 
   let html = '<option value="">-- Sélectionner --</option>';
 
+
+
   res.data.forEach(item => {
     html += `
-      <option value="${item.username}" >${item.etab}</option>
+      <option value="${item.username}" >${nom[item.etab]}</option>
     `
   });
 

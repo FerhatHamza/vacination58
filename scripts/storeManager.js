@@ -22,6 +22,18 @@ const refreshBtn = document.getElementById('refreshBtn');
 const addedQuantityInput = document.getElementById('addedQuantity');
 
 
+const nom = {
+    'DSP El Menia': 'DSP El Menia',
+    'EPH El Menia': 'EPH El Menia',
+    'EPSP El Menia': 'EPSP El Menia',
+    'EPSP Centre 1': 'CV Hassi Gara',
+    'EPSP Centre 2': 'CV Centre Ville',
+    'EPSP Centre 3': 'CV 200 Logt',
+    'EPSP Centre 4': 'CV Vieux Ksar',
+    'EPSP Centre 5': 'CV Hassi Ghanem',
+    'EPSP Centre 6': 'CV  Hassi Fehal',
+    'EPSP Centre 7': 'Equipe Mobile',
+}
 // 🧩 Access control
 function checkAccess(requiredRole) {
     const USER_KEY = "userSession";
@@ -105,8 +117,8 @@ function renderTable(data) {
         if (row.department.includes('Centre')) {
             body.innerHTML += `
           <tr>
-            
-            <td>${escapeHtml(row.department)}</td>
+             
+            <td>${escapeHtml(nom[row.department])}</td>
             <td><strong>${row.quantity_received}</strong></td>
             <td class="${remainingClass}">
                 <strong>${row.quantity_remaining}</strong>

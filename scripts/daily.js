@@ -25,6 +25,19 @@ const stockData = {
   "EPH Berriane": 200
 };
 
+const nom = {
+  'DSP El Menia': 'DSP El Menia',
+  'EPH El Menia': 'EPH El Menia',
+  'EPSP El Menia': 'EPSP El Menia',
+  'EPSP Centre 1': 'CV Hassi Gara',
+  'EPSP Centre 2': 'CV Centre Ville',
+  'EPSP Centre 3': 'CV 200 Logt',
+  'EPSP Centre 4': 'CV Vieux Ksar',
+  'EPSP Centre 5': 'CV Hassi Ghanem',
+  'EPSP Centre 6': 'CV  Hassi Fehal',
+  'EPSP Centre 7': 'Equipe Mobile',
+}
+
 
 var totalVa = 0;
 const logoutBtn = document.getElementById("logoutId");
@@ -129,7 +142,7 @@ async function initPage() {
   const USER_KEY = "userSession";
   const user = JSON.parse(localStorage.getItem(USER_KEY));
   const etab = user.Etab;
-  document.getElementById("etabName").textContent = etab;
+  document.getElementById("etabName").textContent = nom[etab];
   document.getElementById("today").textContent = new Date().toLocaleDateString("fr-DZ");
 
   // Pré-remplir la quantité reçue selon l'établissement
